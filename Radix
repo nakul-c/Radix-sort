@@ -1,0 +1,46 @@
+#include<iostream>
+using namespace std;
+void print(int arr[],int n){
+    for(int i=0;i<n;i++)
+        cout<<arr[i]<<" ";
+    cout<<endl;
+}
+int getmax(int arr[],int n){
+    int max=arr[0];
+    for(int i=1;i<n;i++){
+        if(arr[i]>max)
+            max=arr[i];
+    }
+    return max;
+}
+void countsort(int arr[],int n,int pow){
+    int max=getmax(arr,n);
+    int count[100]={0};
+    int out[100]={0};
+    for(int i=0;i<n;i++)
+        count[(arr[i]/pow)%10]++;
+    for(int i=1;i<10;i++)
+        count[i]+=count[i-1];
+    for(int i=n-1;i>=0;i--){
+        print(arr,n);
+        out[--count[(arr[i]/pow)%10]]=arr[i];
+    }
+    for(int i=0;i<n;i++)
+        arr[i]=out[i];
+    return;
+}
+void radixsort(int arr[],int n){
+    int m=getmax(arr,n);
+    for(int pow=1;m/pow>0;pow*=10)
+        countsort(arr,n,pow);
+}
+int main(void){
+    int arr[100],n;
+    cout<<"Enter the no.of elements : ";
+    cin>>n;
+    for(int i=0;i<n;i++)
+        cin>>arr[i];
+    cout<<"The sorted array : ";
+    radixsort(arr,n);
+    print(arr,n);
+}
